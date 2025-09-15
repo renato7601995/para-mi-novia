@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const BYPASS_PUZZLES = false;
     const SECRET_CODE = "260425"; 
-    const FINAL_TEXT = "¡Te amo, mi Angie!";
+    const FINAL_TEXT = "¡Te amo, Mi Angie!";
     const photoData = {
         1: { src: "assets/images/foto1.jpg", message: "No estes triste amor🌻tienes que seguir adelante pese a todo mi niña", unlocked: false },
         2: { src: "assets/images/foto2.jpg", message: "Ese dia en el cine lo pase genial💖.", unlocked: false },
