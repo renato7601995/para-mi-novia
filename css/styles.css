@@ -1,9 +1,10 @@
 :root {
-    --sunflower-yellow: #FFC300;
-    --sunflower-dark: #B8860B;
-    --background-light: #FFF8E1;
-    --text-color: #5D4037;
-    --white: #FFFFFF;
+    --sunflower-yellow: #ffdb0e;
+    --sunflower-dark: #db4062c0;
+    --background-light: #d43c88;
+    --background-modal: #d7c8e4;
+    --text-color: #ffffff;
+    --white: #eeeeee;
     --shadow: rgba(0, 0, 0, 0.15);
 }
 
@@ -36,7 +37,7 @@ body {
     width: 100%;
     height: 100%;
     padding: 20px;
-    background: rgba(255, 255, 255, 0.8);
+    background: rgba(242, 238, 243, 0.8);
     backdrop-filter: blur(5px);
 }
 
@@ -184,7 +185,7 @@ button:active {
     width: 100%;
     height: 100%;
     background: rgba(0, 0, 0, 0.6);
-    display: none; /* Cambiado por JS a flex */
+    display: none;
     justify-content: center;
     align-items: center;
     z-index: 1000;
@@ -192,7 +193,7 @@ button:active {
 }
 
 .modal-content {
-    background: var(--background-light);
+    background: var(--background-modal);
     padding: 20px;
     border-radius: 20px;
     text-align: center;
@@ -220,48 +221,115 @@ button:active {
     margin-bottom: 20px;
 }
 
-/* --- Estilos del Puzzle --- */
-.puzzle-container {
+/* --- ESTILOS DEL PUZZLE (DISEÑO VERTICAL ESTABLE Y CORREGIDO) --- */
+.puzzle-workspace {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 20px;
-    margin-bottom: 20px;
+    gap: 10px;
+    margin: 15px 0;
 }
-
-#puzzle-board, #piece-container {
+.puzzle-main-area {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 40px; 
+    width: 100%;
+}
+#puzzle-board {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 5px;
-    width: 80vw;
-    max-width: 300px;
+    gap: 4px;
+    flex-grow: 1;
+    min-width: 0; 
+    max-width: 250px;
     aspect-ratio: 1 / 1;
-    background: var(--sunflower-dark);
+    background: rgba(255, 255, 255, 0.4);
     padding: 5px;
-    border-radius: 10px;
+    border-radius: 12px;
+    border: 1px solid var(--sunflower-yellow);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
 }
-
 #puzzle-board .puzzle-slot {
-    background: rgba(255, 255, 255, 0.2);
-    border: 1px dashed var(--white);
+    background: rgba(0, 0, 0, 0.1);
+    border: 1px dashed var(--sunflower-dark);
+    border-radius: 6px;
     aspect-ratio: 1 / 1;
+    transition: all 0.3s ease;
 }
+#puzzle-board .puzzle-slot.correct {
+    border: 2px solid #4CAF50;
+    box-shadow: 0 0 10px #4CAF50;
+}
+#puzzle-board .puzzle-slot.incorrect {
+    border: 2px solid #F44336;
+    box-shadow: 0 0 10px #F44336;
+}
+.reference-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    flex-shrink: 0;
+}
+.reference-container h4 {
+    font-family: 'Quicksand', sans-serif;
+    color: var(--text-color);
+    font-size: 0.9em;
+    margin: 0;
+}
+#reference-image {
+    width: 70px;
+    height: 70px;
+    border-radius: 8px;
+    border: 2px solid var(--sunflower-dark);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+.pieces-title {
+    font-size: 1em;
+    font-weight: 600;
+    margin-top: 10px;
+    margin-bottom: 5px;
+}
+#piece-container {
+    display: flex;
+    gap: 10px;
+    width: 90%;
+    padding: 10px;
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 12px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    justify-content: flex-start;
+    /* --- ¡CORRECCIÓN CLAVE! --- */
+    min-height: 90px; /* 70px de la pieza + 20px de padding */
+}
+#piece-container::-webkit-scrollbar { height: 5px; }
+#piece-container::-webkit-scrollbar-thumb { background: var(--sunflower-dark); border-radius: 10px; }
 
 .puzzle-piece {
+    cursor: grab;
+    border-radius: 6px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+#puzzle-board .puzzle-piece {
     width: 100%;
     height: 100%;
-    background-size: 300% 300%;
-    cursor: grab;
-    transition: transform 0.2s, box-shadow 0.2s;
 }
-
-.puzzle-piece:active {
+.puzzle-piece.dragging {
     cursor: grabbing;
     transform: scale(1.1);
-    box-shadow: 0 5px 15px var(--shadow);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
     z-index: 10;
 }
-/* CÓDIGO A AÑADIR al final de style.css */
+#puzzle-modal .secondary {
+    background: transparent;
+    color: var(--text-color);
+    box-shadow: none;
+    margin-top: -10px;
+    font-size: 1em;
+}
 
 /* --- Pantalla de Celebración Final --- */
 #final-celebration {
@@ -270,7 +338,7 @@ button:active {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: #000; /* Fondo oscuro para que resalten los fuegos */
+    background-color: #000;
     z-index: 2000;
     justify-content: center;
     align-items: center;
@@ -278,12 +346,10 @@ button:active {
     pointer-events: none;
     transition: opacity 1s ease-in-out;
 }
-
 #final-celebration.active {
     opacity: 1;
     pointer-events: all;
 }
-
 #celebration-canvas {
     position: absolute;
     top: 0;
@@ -291,21 +357,47 @@ button:active {
     width: 100%;
     height: 100%;
 }
-
 #final-message {
     color: var(--sunflower-yellow);
-    font-size: 3em; /* Ajustable */
+    font-size: 4.5em;
     text-shadow: 0 0 10px var(--sunflower-yellow), 0 0 20px var(--sunflower-dark);
     z-index: 2001;
     text-align: center;
     transform: scale(0);
     opacity: 0;
-    animation: fadeInZoom 2s ease-out 2.5s forwards; /* El mensaje aparece después de 2.5s */
+    animation: fadeInZoom 2s ease-out 2.5s forwards;
 }
-
 @keyframes fadeInZoom {
     to {
-        transform: scale(1);
+        transform: scale(1) translateY(-400px) translateX(10px);
         opacity: 1;
+    }
+}
+
+/* --- ANIMACIÓN DE LLUVIA DE MY MELODY --- */
+#melody-rain-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none; /* Muy importante para poder hacer clic en las fotos */
+    z-index: 1; /* Detrás de las ventanas, pero encima del fondo */
+    overflow: hidden;
+    display: none; /* Oculto por defecto */
+    opacity: 0; /* Empezará invisible para una transición suave */
+    transition: opacity 1s ease-in-out; /* Transición para aparecer y desaparecer */
+}
+
+.falling-melody {
+    position: absolute;
+    top: -100px; /* Empieza fuera de la pantalla */
+    animation: fallAndRotate linear forwards;
+    /* La duración y otros valores se establecen con JavaScript */
+}
+
+@keyframes fallAndRotate {
+    to {
+        transform: translateY(110vh) rotate(360deg); /* Cae hasta desaparecer y rota */
     }
 }

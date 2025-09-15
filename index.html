@@ -10,10 +10,14 @@
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
 </head>
 <body>
+    <div id="melody-rain-container"></div>
 
     <!-- Música de fondo -->
     <audio id="background-music" loop>
-        <source src="assets/audio/[이번 생도 잘 부탁해 OST Part 2] Colde (콜드) - Star MV.mp3" type="audio/mpeg">
+        <source src="assets/audio/cancion-coreana.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="firework-sound">
+        <source src="assets/audio/firework-explosion.mp3" type="audio/mpeg">
     </audio>
 
     <!-- PANTALLA DE CÓDIGO -->
@@ -21,7 +25,7 @@
         <img src="assets/images/my-melody.png" alt="My Melody" class="my-melody-icon">
         <h1>Hola Mi Angie</h1>
         <p>Te quiero decir algo 🌻 ingresa nuestro codigo secreto (pista nuestro aniversario jsjs)</p>
-        <input type="password" id="secret-code" placeholder="Código Secreto...">
+        <input type="text" inputmode="numeric" pattern="[0-9]*" id="secret-code" placeholder="ddmmaa" maxlength="6">
         <button id="login-button">Entrar</button>
         <p id="error-message" class="hidden">Código incorrecto, ¡inténtalo de nuevo!</p>
     </div>
@@ -30,50 +34,32 @@
     <div id="gallery-screen" class="screen">
         <h2>Nuestros Momentos Especiales</h2>
         <div class="gallery-grid">
-            <!-- Foto 1 -->
-            <div class="photo-container" data-id="1">
-                <img src="assets/images/foto1.jpg" class="photo-preview blurred">
-                <div class="lock-overlay">
-                    <img src="assets/images/candado.png" alt="Candado" class="lock-icon">
-                </div>
-            </div>
-            <!-- Foto 2 -->
-            <div class="photo-container" data-id="2">
-                <img src="assets/images/foto2.jpg" class="photo-preview blurred">
-                <div class="lock-overlay">
-                    <img src="assets/images/candado.png" alt="Candado" class="lock-icon">
-                </div>
-            </div>
-            <!-- Foto 3 -->
-            <div class="photo-container" data-id="3">
-                <img src="assets/images/foto3.jpg" class="photo-preview blurred">
-                <div class="lock-overlay">
-                    <img src="assets/images/candado.png" alt="Candado" class="lock-icon">
-                </div>
-            </div>
-            <!-- Foto 4 -->
-            <div class="photo-container" data-id="4">
-                <img src="assets/images/foto4.jpg" class="photo-preview blurred">
-                <div class="lock-overlay">
-                    <img src="assets/images/candado.png" alt="Candado" class="lock-icon">
-                </div>
-            </div>
+            <div class="photo-container" data-id="1"><img src="assets/images/foto1.jpg" class="photo-preview blurred"><div class="lock-overlay"><img src="assets/images/candado.png" alt="Candado" class="lock-icon"></div></div>
+            <div class="photo-container" data-id="2"><img src="assets/images/foto2.jpg" class="photo-preview blurred"><div class="lock-overlay"><img src="assets/images/candado.png" alt="Candado" class="lock-icon"></div></div>
+            <div class="photo-container" data-id="3"><img src="assets/images/foto3.jpg" class="photo-preview blurred"><div class="lock-overlay"><img src="assets/images/candado.png" alt="Candado" class="lock-icon"></div></div>
+            <div class="photo-container" data-id="4"><img src="assets/images/foto4.jpg" class="photo-preview blurred"><div class="lock-overlay"><img src="assets/images/candado.png" alt="Candado" class="lock-icon"></div></div>
         </div>
     </div>
 
     <!-- PANTALLA DEL PUZZLE (MODAL) -->
     <div id="puzzle-modal" class="modal">
         <div class="modal-content">
-            <h3>¡Arma el recuerdo!</h3>
-            <p>Arrastra las piezas al tablero para formar la imagen.</p>
-            <div class="puzzle-container">
-                <div id="puzzle-board"></div>
+            <h3>¡Arma nuestro recuerdo!</h3>
+            <div class="puzzle-workspace">
+                <div class="puzzle-main-area">
+                    <div id="puzzle-board"></div>
+                    <div class="reference-container">
+                        <h4>Guía</h4>
+                        <img id="reference-image" src="" alt="Imagen de referencia">
+                    </div>
+                </div>
+                <p class="pieces-title">Tus piezas:</p>
                 <div id="piece-container"></div>
             </div>
             <button id="check-puzzle-button">¡Listo!</button>
-            <button id="close-puzzle-button">Cerrar</button>
+            <button id="close-puzzle-button" class="secondary">Cerrar</button>
         </div>
-    </div>
+    </div> <!-- <-- CORRECCIÓN: Esta es la etiqueta </div> que faltaba para cerrar #puzzle-modal -->
 
     <!-- PANTALLA DE FOTO DESBLOQUEADA (MODAL) -->
     <div id="unlocked-modal" class="modal">
@@ -84,12 +70,10 @@
         </div>
     </div>
 
-    <script src="js/main.js"></script>
-    <!-- CÓDIGO A AÑADIR al final del <body> en index.html -->
-
     <!-- PANTALLA DE CELEBRACIÓN FINAL -->
     <div id="final-celebration" class="screen">
         <canvas id="celebration-canvas"></canvas>
+        <img id="character-silhouette" src="assets/images/personaje-silueta.png" style="display: none;" alt="Character Mold">
         <h1 id="final-message"></h1>
     </div>
 
